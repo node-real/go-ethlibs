@@ -321,6 +321,13 @@ func (d *Data32) RLP() rlp.Value {
 	}
 }
 
+// RLP returns the Data256 as an RLP-encoded string.
+func (d *Data256) RLP() rlp.Value {
+	return rlp.Value{
+		String: d.String(),
+	}
+}
+
 type hasBytes interface {
 	Bytes() []byte
 }
