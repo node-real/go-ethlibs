@@ -1,15 +1,19 @@
 package jsonrpc
 
 import (
+	"encoding/json"
 	"fmt"
+
+	jsoniter "github.com/json-iterator/go"
+	"github.com/node-real/go-pkg/log"
 )
 
 type ErrorCode int
 
 type Error struct {
-	Code    ErrorCode              `json:"code"`
-	Message string                 `json:"message"`
-	Data    map[string]interface{} `json:"data,omitempty"`
+	Code    ErrorCode       `json:"code"`
+	Message string          `json:"message"`
+	Data    json.RawMessage `json:"data,omitempty"`
 }
 
 const (
@@ -37,7 +41,11 @@ func NewError(code ErrorCode, message string, data ...map[string]interface{}) *E
 	}
 
 	if len(data) > 0 {
-		e.Data = data[0]
+		dataByte, err := jsoniter.Marshal(data)
+		if err != nil {
+			log.Errorw("marshal error data failed", "err", err)
+		}
+		e.Data = dataByte
 	}
 
 	return &e

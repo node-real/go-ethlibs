@@ -44,6 +44,9 @@ func (id ID) String() string {
 // MarshalJSON implements json.Marshaler.
 func (id ID) MarshalJSON() ([]byte, error) {
 	if id.IsString {
+		if id.Str == "" {
+			return []byte("null"), nil
+		}
 		return json.Marshal(id.Str)
 	}
 	return json.Marshal(id.Num)
