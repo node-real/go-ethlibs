@@ -65,3 +65,11 @@ func (r *Response) UnmarshalJSON(data []byte) error {
 	}
 	return nil
 }
+
+func NewResultResponse(result interface{}, id ID) *Response {
+	return &Response{
+		JSONRPC: VSN,
+		ID:      id,
+		Result:  result,
+	}
+}

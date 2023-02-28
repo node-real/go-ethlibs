@@ -67,7 +67,7 @@ func (r *RawResponse) UnmarshalJSON(data []byte) error {
 
 const VSN = "2.0"
 
-func NewResultResponse(result []byte, id ID) *RawResponse {
+func NewResultRawResponse(result []byte, id ID) *RawResponse {
 	return &RawResponse{
 		JSONRPC: VSN,
 		ID:      id,
