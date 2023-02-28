@@ -2,6 +2,10 @@ package jsonrpc
 
 import (
 	"encoding/json"
+	"fmt"
+
+	jsoniter "github.com/json-iterator/go"
+	"github.com/node-real/go-pkg/log"
 )
 
 // RawResponse keeps Result and Error as unparsed JSON
@@ -57,4 +61,65 @@ func (r *RawResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+// =====================================================================================================================
+
+const VSN = "2.0"
+
+func NewResultResponse(result []byte, id ID) *RawResponse {
+	return &RawResponse{
+		JSONRPC: VSN,
+		ID:      id,
+		Result:  result,
+	}
+}
+
+func NewErrorResponse(error *Error, id ID) *RawResponse {
+	var rawError json.RawMessage
+	rawError, err := jsoniter.Marshal(&error)
+	if err != nil {
+		log.Errorf("err:%v, when marshal in errorMessage", err)
+	}
+	return &RawResponse{
+		JSONRPC: VSN,
+		ID:      id,
+		Error:   &rawError,
+	}
+}
+
+func NewNullResponse(id ID) *RawResponse {
+	return &RawResponse{
+		JSONRPC: VSN,
+		ID:      id,
+		Result:  []byte("null"),
+	}
+}
+
+func NewInvalidInput(message string, id ID) *RawResponse {
+	return NewErrorResponse(InvalidInput(message), id)
+}
+
+func NewInvalidParams(id ID) *RawResponse {
+	return NewErrorResponse(InvalidParams("invalid params"), id)
+}
+
+func NewMissingParams(id ID, index int) *RawResponse {
+	return NewErrorResponse(InvalidParams(fmt.Sprintf("missing value for required argument %v", index)), id)
+}
+
+func NewInvalidParamsWithMessage(message string, id ID) *RawResponse {
+	return NewErrorResponse(InvalidParams(message), id)
+}
+
+func NewInternalError(id ID) *RawResponse {
+	return NewErrorResponse(InternalError("internal error"), id)
+}
+
+func NewParseError(id ID) *RawResponse {
+	return NewErrorResponse(ParseError("parse error"), id)
+}
+
+func NewResourceUnavailable(message string, id ID) *RawResponse {
+	return NewErrorResponse(ResourceUnavailable(message), id)
 }
