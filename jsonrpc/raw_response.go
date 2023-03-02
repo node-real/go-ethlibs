@@ -123,3 +123,7 @@ func NewParseError(id ID) *RawResponse {
 func NewResourceUnavailable(message string, id ID) *RawResponse {
 	return NewErrorResponse(ResourceUnavailable(message), id)
 }
+
+func NewResourceNotFound(message string, id ID) *RawResponse {
+	return NewErrorResponse(ResourceNotFound(message), id)
+}
