@@ -1,11 +1,11 @@
 package jsonrpc
 
 import (
-	"encoding/json"
 	"fmt"
 
-	jsoniter "github.com/json-iterator/go"
 	"github.com/node-real/go-pkg/log"
+
+	"github.com/node-real/go-ethlibs/json"
 )
 
 // RawResponse keeps Result and Error as unparsed JSON
@@ -77,7 +77,7 @@ func NewResultRawResponse(result []byte, id ID) *RawResponse {
 
 func NewErrorResponse(error *Error, id ID) *RawResponse {
 	var rawError json.RawMessage
-	rawError, err := jsoniter.Marshal(&error)
+	rawError, err := json.Marshal(&error)
 	if err != nil {
 		log.Errorf("err:%v, when marshal in errorMessage", err)
 	}

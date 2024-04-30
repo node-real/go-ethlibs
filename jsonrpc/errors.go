@@ -1,11 +1,11 @@
 package jsonrpc
 
 import (
-	"encoding/json"
 	"fmt"
 
-	jsoniter "github.com/json-iterator/go"
 	"github.com/node-real/go-pkg/log"
+
+	"github.com/node-real/go-ethlibs/json"
 )
 
 type ErrorCode int
@@ -41,7 +41,7 @@ func NewError(code ErrorCode, message string, data ...map[string]interface{}) *E
 	}
 
 	if len(data) > 0 {
-		dataByte, err := jsoniter.Marshal(data[0])
+		dataByte, err := json.Marshal(data[0])
 		if err != nil {
 			log.Errorw("marshal error data failed", "err", err)
 		}
