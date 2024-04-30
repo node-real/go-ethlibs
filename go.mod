@@ -13,7 +13,7 @@ require (
 
 require (
 	github.com/INFURA/go-ethlibs v0.0.0-20240118140654-7a2c074b271e
-	github.com/node-real/go-pkg v0.0.6-0.20240430075742-74676aaa8455
+	github.com/node-real/go-pkg v0.0.6-0.20240430081241-745a0bcccf93
 )
 
 require (
